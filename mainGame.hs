@@ -1,0 +1,1 @@
+printBoard = putChunkLn $ "AAA" <> b_white
