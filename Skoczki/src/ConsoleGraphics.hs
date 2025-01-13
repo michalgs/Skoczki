@@ -28,7 +28,9 @@ printColorSelection = do
 
 printField field = do
     if (column field == A) 
-        then printRowName (row field)
+        then do 
+            putStr $ fromString " "
+            printRowName (row field)
     else putStr $ fromString ""
     setSGR [ SetConsoleIntensity BoldIntensity
              , SetColor Foreground Vivid (getOppositeColor(color field))
@@ -51,15 +53,9 @@ printGameState board = do
 printBoard :: [Field] -> IO()
 printBoard board = mapM_ printField board
 
-getColor color
-    | color == BlackColor = Black
-    | color == WhiteColor = White
-
-getOppositeColor color
-    | color == BlackColor = White
-    | color == WhiteColor = Black
 
 printColumnNames = do
+    putStr $ fromString " "
     setSGR [ SetConsoleIntensity BoldIntensity
              , SetColor Foreground Vivid White
              , SetColor Background Dull Yellow
@@ -80,3 +76,32 @@ printRowName row = do
              ]
     putStr $ fromString (" " ++ show (getRowNumeric row) ++ " ")
     setSGR [Reset]
+
+-- helper functions
+
+getColor color
+    | color == BlackColor = Black
+    | color == WhiteColor = White
+
+getOppositeColor color
+    | color == BlackColor = White
+    | color == WhiteColor = Black
+
+printInputIndicator = do
+    setSGR [ SetConsoleIntensity BoldIntensity
+             , SetColor Foreground Vivid Cyan
+             , SetColor Background Dull Black -- maybe vivid?
+             ]
+    putStr $ fromString ">>  "
+    setSGR [Reset]
+
+printColorIndicator color = do
+    setSGR [ SetConsoleIntensity BoldIntensity
+             , SetColor Foreground Vivid Green
+             , SetColor Background Dull Black
+             ]
+    putStr $ fromString playersColorIndicator
+    putStr $ fromString (show colorValue)
+    setSGR [Reset]
+    putStr $ fromString "\n"
+    where colorValue = getColor color

@@ -22,11 +22,11 @@ data Piece = Piece {
 } deriving (Read, Show, Eq, Ord)
 
 
--- ♔♕♖♗♘♙♚♛♜♝♞♟
+-- ♔♕♖♗♘♙
 
 defaultPiece = Knight
 
-appHeader = "______SKOCZKI THE GAME______"
+appHeader = "♘ ♘ ♘ SKOCZKI bajo jajo THE GAME ♞ ♞ ♞"
 
 mainMenuHeader = "Welcome!"
 startGameOption = "1. Start"
@@ -36,10 +36,14 @@ colorSelectionHeader = "Select the color of your pieces:"
 whiteOption = "1. White"
 blackOption = "2. Black"
 
+playersColorIndicator = "You're playing as: "
+
+
 emptyBoard :: [Field]
 emptyBoard = [Field column row (Piece NoColor Blank) (setColor column row) | column <- allColumns, row <- allRows]
 
 startingBoardWhite :: [Field]
+
 startingBoardWhite = [Field column row (defaultPieceOrBlank row)  (setColor column row) | row <- allRowsReverse, column <- allColumns]
 
 startingBoardBlack :: [Field]
