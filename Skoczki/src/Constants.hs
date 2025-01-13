@@ -1,16 +1,4 @@
-module Constants (
-    appHeader,
-    getBlackPiece,
-    getWhitePiece,
-    emptyBoard,
-    startingBoard,
-    Color(..),
-    Field(..),
-    Piece(..),
-    PieceType(..),
-    Row(..),
-    Column(..),
-) where
+module Constants where
 
 data Color =  NoColor | BlackColor | WhiteColor
     deriving (Read, Show, Enum, Eq, Ord)
@@ -33,17 +21,29 @@ data Piece = Piece {
     pieceType :: PieceType
 } deriving (Read, Show, Eq, Ord)
 
+
+-- ♔♕♖♗♘♙♚♛♜♝♞♟
+
 defaultPiece = Knight
 
 appHeader = "______SKOCZKI THE GAME______"
 
+mainMenuHeader = "Welcome!"
 startGameOption = "1. Start"
 exitGameOption = "2. Exit"
 
-emptyBoard :: [Field]
-emptyBoard = [Field column row (Piece NoColor Blank) (getColor column row) | column <- [A .. H], row <- [One .. Eight]]
+colorSelectionHeader = "Select the color of your pieces:"
+whiteOption = "1. White"
+blackOption = "2. Black"
 
-startingBoard = [Field column row (defaultPieceOrBlank row)  (getColor column row) | row <- [Eight, Seven .. One], column <- [A .. H]]
+emptyBoard :: [Field]
+emptyBoard = [Field column row (Piece NoColor Blank) (setColor column row) | column <- allColumns, row <- allRows]
+
+startingBoardWhite :: [Field]
+startingBoardWhite = [Field column row (defaultPieceOrBlank row)  (setColor column row) | row <- allRowsReverse, column <- allColumns]
+
+startingBoardBlack :: [Field]
+startingBoardBlack = [Field column row (defaultPieceOrBlank row)  (setColor column row) | row <- allRows, column <- allColumns]
 
 
 defaultPieceOrBlank row
@@ -51,12 +51,20 @@ defaultPieceOrBlank row
     | row == Seven || row == Eight = (Piece BlackColor defaultPiece)
     | otherwise = (Piece NoColor Blank)
 
-getColor xCoord yCoord
+setColor xCoord yCoord
     | even diff = WhiteColor
     | otherwise = BlackColor
     where x = fromEnum xCoord
           y = fromEnum yCoord
           diff = abs (x - y)
+
+getPieceCode piece
+    | color == BlackColor = getBlackPiece _type
+    | color == WhiteColor = getWhitePiece _type
+    | color == NoColor = "  "
+    where color = pieceColor piece
+          _type = pieceType piece
+
 
 getWhitePiece :: PieceType -> String
 getWhitePiece piece
@@ -75,3 +83,10 @@ getBlackPiece piece
     | piece == Rook = "♖ "
     | piece == Queen = "♕ "
     | piece == King = "♔ "
+
+allColumns = [A .. H]
+allRows = [One .. Eight]
+allRowsReverse = [Eight, Seven .. One]
+
+
+getRowNumeric row = fromEnum row + 1
