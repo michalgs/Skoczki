@@ -4,6 +4,7 @@ import System.Console.ANSI (clearScreen)
 import System.Exit
 import ConsoleGraphics
 import Constants
+import MoveHandling
 
 launchMainMenu = do
     clearScreen
@@ -28,8 +29,8 @@ runTheRound board color = do
     printColorIndicator color
     printGameState board
     printInputIndicator
-    move <- getLine
-    let newBoard = handleMoveSelection move board
+    moves <- getLine
+    let newBoard = handleMoveSelection moves board color
     runTheRound newBoard color
 
 selectStartingBoard color
@@ -59,4 +60,6 @@ handleColorSelection selection
 
 -- Move handling
 
-handleMoveSelection move board = board
+handleMoveSelection moves board color = 
+    makeMove (head movesList) (last movesList) board color
+    where movesList = getMovesList moves 

@@ -28,7 +28,7 @@ data Coords = Coords {
 
 -- ♔♕♖♗♘♙
 
-defaultPiece = Knight
+defaultPieceType = Knight
 
 appHeader = "♘ ♘ ♘ SKOCZKI bajo jajo THE GAME ♞ ♞ ♞"
 
@@ -59,8 +59,8 @@ startingBoardBlack = [Field column row (defaultPieceOrBlank row)  (setColor colu
 
 
 defaultPieceOrBlank row
-    | row == One || row == Two = (Piece WhiteColor defaultPiece)
-    | row == Seven || row == Eight = (Piece BlackColor defaultPiece)
+    | row == One || row == Two = (Piece WhiteColor defaultPieceType)
+    | row == Seven || row == Eight = (Piece BlackColor defaultPieceType)
     | otherwise = (Piece NoColor Blank)
 
 setColor xCoord yCoord
@@ -77,6 +77,8 @@ getPieceCode piece
     where color = pieceColor piece
           _type = pieceType piece
 
+getDefaultPiece color = Piece color defaultPieceType
+getBlankPiece = Piece NoColor Blank
 
 getWhitePiece :: PieceType -> String
 getWhitePiece piece
