@@ -29,6 +29,8 @@ library
       Constants
       GameLogic
       Lib
+      MoveHandling
+      Utils
   other-modules:
       Paths_Skoczki
   autogen-modules:

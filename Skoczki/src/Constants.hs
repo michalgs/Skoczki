@@ -21,6 +21,10 @@ data Piece = Piece {
     pieceType :: PieceType
 } deriving (Read, Show, Eq, Ord)
 
+data Coords = Coords {
+    x :: Column,
+    y :: Row
+} deriving (Read, Show, Eq, Ord)
 
 -- ♔♕♖♗♘♙
 
@@ -40,14 +44,18 @@ playersColorIndicator = "You're playing as: "
 
 
 emptyBoard :: [Field]
-emptyBoard = [Field column row (Piece NoColor Blank) (setColor column row) | column <- allColumns, row <- allRows]
+emptyBoard = [Field column row (Piece NoColor Blank) (setColor column row) 
+                | column <- allColumns, row <- allRows]
 
 startingBoardWhite :: [Field]
 
-startingBoardWhite = [Field column row (defaultPieceOrBlank row)  (setColor column row) | row <- allRowsReverse, column <- allColumns]
+startingBoardWhite = [Field column row (defaultPieceOrBlank row)  (setColor column row) 
+                        | row <- allRowsReverse, column <- allColumns]
 
 startingBoardBlack :: [Field]
-startingBoardBlack = [Field column row (defaultPieceOrBlank row)  (setColor column row) | row <- allRows, column <- allColumns]
+startingBoardBlack = [Field column row (defaultPieceOrBlank row)  (setColor column row) 
+                        | row <- allRows, column <- allColumns]
+
 
 
 defaultPieceOrBlank row
@@ -94,3 +102,4 @@ allRowsReverse = [Eight, Seven .. One]
 
 
 getRowNumeric row = fromEnum row + 1
+

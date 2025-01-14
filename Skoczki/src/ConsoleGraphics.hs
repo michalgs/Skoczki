@@ -77,7 +77,7 @@ printRowName row = do
     putStr $ fromString (" " ++ show (getRowNumeric row) ++ " ")
     setSGR [Reset]
 
--- helper functions
+-- Helper functions
 
 getColor color
     | color == BlackColor = Black

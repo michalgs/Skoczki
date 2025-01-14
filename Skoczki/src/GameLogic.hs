@@ -57,4 +57,6 @@ handleColorSelection selection
     | otherwise = launchColorSelection
 
 
+-- Move handling
+
 handleMoveSelection move board = board
