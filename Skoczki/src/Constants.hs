@@ -8,6 +8,8 @@ data Column = A | B | C | D | E | F | G | H
     deriving (Read, Show, Enum, Eq, Ord)
 data Row = One | Two | Three | Four | Five | Six | Seven | Eight 
     deriving (Read, Show, Enum, Eq, Ord)
+data Direction = UpD | DownD | LeftD | RightD
+    deriving (Read, Show, Enum, Eq, Ord)
 
 data Field = Field {
     column :: Column,
@@ -30,7 +32,7 @@ data Coords = Coords {
 
 defaultPieceType = Knight
 
-appHeader = "♘ ♘ ♘ SKOCZKI THE GAME ♞ ♞ ♞"
+appHeader = "♘ ♘ ♘ SKOCZKI bajo jajo THE GAME ♞ ♞ ♞"
 
 mainMenuHeader = "Welcome!"
 startGameOption = "1. Start"

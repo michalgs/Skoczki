@@ -44,7 +44,7 @@ matchingCoords x1 y1 x2 y2 = (x1 == x2) && (y1 == y2)
 
 moveIsLegal :: [Coords] -> [Field] -> Color -> Color -> Bool
 moveIsLegal movesList currentBoard currentColor playerColor =
-    startPieceIsLegal startField currentColor && everyJumpIsLegal (checkEveryJump movesList currentBoard currentColor)
+    startPieceIsLegal startField currentColor && everyJumpIsLegal (checkEveryJump movesList currentBoard playerColor)
     where startCoords = head movesList
           startField = getFieldFromCoords currentBoard (x startCoords) (y startCoords) playerColor
 

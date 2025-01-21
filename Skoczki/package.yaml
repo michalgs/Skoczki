@@ -24,6 +24,7 @@ dependencies:
 - utf8-string
 - bytestring
 - ansi-terminal
+- random
 
 ghc-options:
 - -Wall

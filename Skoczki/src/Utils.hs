@@ -47,9 +47,25 @@ checkBooleanList occupancyList
 
 
 toLower letter =
-      if letter >= 'A' && letter <= 'Z'
-            then toEnum (fromEnum 'a' + letterIndex)
+      if letter >= 'A' && letter <= 'Z' then toEnum (fromEnum 'a' + letterIndex)
       else letter
       where letterIndex = fromEnum letter - fromEnum 'A'
 
 digitToInt digit = fromEnum digit - fromEnum '0'
+
+canMoveInDirection direction startingCoords distance
+      | direction == UpD = (fromEnum row - distance) >= 0
+      | direction == DownD = (row + distance) < 8
+      | direction == LeftD = (column - distance) >= 0
+      | direction == RightD = (column + distance) < 8
+      where column = fromEnum (x startingCoords)
+            row = fromEnum (y startingCoords)
+
+
+getCoordsAfterMove direction startingCoords distance
+      | direction == UpD = Coords column (toEnum(fromEnum row - distance)::Row)
+      | direction == DownD = Coords column (toEnum(fromEnum row + distance)::Row)
+      | direction == LeftD = Coords (toEnum(fromEnum column - distance)::Column) row
+      | direction == RightD = Coords (toEnum(fromEnum column + distance)::Column) row
+      where column = x startingCoords
+            row = y startingCoords

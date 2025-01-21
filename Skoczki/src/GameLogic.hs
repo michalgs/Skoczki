@@ -6,7 +6,7 @@ import ConsoleGraphics
 import Constants
 import MoveHandling
 import Utils
-
+import BotMoveHandling
 launchMainMenu = do
     clearScreen
     printMainMenu
@@ -33,7 +33,17 @@ runTheRound board color = do
     let legalMove = (moveIsLegal (getMovesList moves) board color color)
     clearScreen
     let newBoard = changeBoardOnCondition legalMove board (handleMoveSelection moves board color)
-    runTheRound newBoard color
+    finalBoard <- if legalMove then do
+        botStartCoords <- findStartingField newBoard color
+        let botFinishCoords = findLegalFinishingCoords board botStartCoords color
+        let botMoveBoard = makeMove botStartCoords botFinishCoords newBoard (getBotColor color)
+        print botStartCoords
+        print botFinishCoords
+        return botMoveBoard
+    else do 
+        printWrongMoveIndicator
+        return newBoard
+    runTheRound finalBoard color
 
 selectStartingBoard color
     | color == WhiteColor = startingBoardWhite
@@ -69,3 +79,4 @@ handleMoveSelection moves board color =
 changeBoardOnCondition condition oldBoard newBoard =
     if condition then newBoard
     else oldBoard
+
