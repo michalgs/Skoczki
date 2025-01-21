@@ -10,6 +10,8 @@ data Row = One | Two | Three | Four | Five | Six | Seven | Eight
     deriving (Read, Show, Enum, Eq, Ord)
 data Direction = UpD | DownD | LeftD | RightD
     deriving (Read, Show, Enum, Eq, Ord)
+data Winner = None | Player | Bot
+    deriving (Read, Show, Enum, Eq, Ord)
 
 data Field = Field {
     column :: Column,
@@ -44,6 +46,9 @@ blackOption = "2. Black"
 
 playersColorIndicator = "You're playing as: "
 wrongMoveIndicator = "Illegal move, try again..."
+playersWinIndicator = "Congratulations, you've won!"
+botsWinIndicator = "Unfortunately computer has won... Better luck next time!"
+keyPressIndicator = "Press Enter to continue..."
 
 emptyBoard :: [Field]
 emptyBoard = [Field column row (Piece NoColor Blank) (setColor column row) 

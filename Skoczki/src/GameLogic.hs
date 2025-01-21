@@ -7,6 +7,7 @@ import Constants
 import MoveHandling
 import Utils
 import BotMoveHandling
+
 launchMainMenu = do
     clearScreen
     printMainMenu
@@ -23,27 +24,36 @@ launchColorSelection = do
 
 launchGameplay color = do
     clearScreen
-    runTheRound (selectStartingBoard color) color
+    runTheRound (selectStartingBoard color) color None
 
-runTheRound board color = do
-    printColorIndicator color
-    printGameState board color
-    printInputIndicator
-    moves <- getLine
-    let legalMove = (moveIsLegal (getMovesList moves) board color color)
-    clearScreen
-    let newBoard = changeBoardOnCondition legalMove board (handleMoveSelection moves board color)
-    finalBoard <- if legalMove then do
-        botStartCoords <- findStartingField newBoard color
-        let botFinishCoords = findLegalFinishingCoords board botStartCoords color
-        let botMoveBoard = makeMove botStartCoords botFinishCoords newBoard (getBotColor color)
-        print botStartCoords
-        print botFinishCoords
-        return botMoveBoard
-    else do 
-        printWrongMoveIndicator
-        return newBoard
-    runTheRound finalBoard color
+runTheRound board color winner = do
+    if (winner == Player) then do
+        printPlayersWinIndicator
+        printGameState board color
+        temp <- getLine
+        launchMainMenu
+    else if (winner == Bot) then do
+        printBotsWinIndicator
+        printGameState board color
+        temp <- getLine
+        launchMainMenu
+    else do
+        printColorIndicator color
+        printGameState board color
+        printInputIndicator
+        moves <- getLine
+        let legalMove = (moveIsLegal (getMovesList moves) board color color)
+        clearScreen
+        let newBoard = changeBoardOnCondition legalMove board (handleMoveSelection moves board color)
+        finalBoard <- if legalMove then do
+            botStartCoords <- findStartingField newBoard color
+            let botFinishCoords = findLegalFinishingCoords board botStartCoords color
+            let botMoveBoard = makeMove botStartCoords botFinishCoords newBoard (getBotColor color)
+            return botMoveBoard
+        else do 
+            printWrongMoveIndicator
+            return newBoard
+        runTheRound finalBoard color (isGameFinished newBoard color)
 
 selectStartingBoard color
     | color == WhiteColor = startingBoardWhite
@@ -80,3 +90,16 @@ changeBoardOnCondition condition oldBoard newBoard =
     if condition then newBoard
     else oldBoard
 
+isGameFinished board playerColor
+    | checkBooleanList ([(piece (getFieldFromCoords board row column playerColor)) == getDefaultPiece playerColor 
+                            | row <- (getOpponentRows playerColor), column <- allColumns]) = Player
+    | checkBooleanList ([(piece (getFieldFromCoords board row column playerColor)) == getDefaultPiece botColor 
+                            | row <- (getOpponentRows botColor), column <- allColumns]) = Bot
+    | otherwise = None
+    where botColor = getBotColor playerColor
+
+
+
+getOpponentRows playerColor
+    | playerColor == WhiteColor = [Seven, Eight]
+    | otherwise = [One, Two]

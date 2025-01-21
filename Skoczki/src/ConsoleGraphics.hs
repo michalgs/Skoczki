@@ -118,3 +118,25 @@ printWrongMoveIndicator = do
     putStr $ fromString wrongMoveIndicator
     setSGR [Reset]
     putStr $ fromString "\n"
+
+printPlayersWinIndicator = do
+    setSGR [ SetConsoleIntensity BoldIntensity
+             , SetColor Foreground Vivid Blue
+             , SetColor Background Dull Black
+             ]
+    putStr $ fromString playersWinIndicator
+    putStr $ fromString "\n"
+    setSGR [Reset]
+    putStr $ fromString keyPressIndicator
+    putStr $ fromString "\n"
+
+printBotsWinIndicator = do
+    setSGR [ SetConsoleIntensity BoldIntensity
+             , SetColor Foreground Vivid Red
+             , SetColor Background Dull Black
+             ]
+    putStr $ fromString botsWinIndicator
+    putStr $ fromString "\n"
+    setSGR [Reset]
+    putStr $ fromString keyPressIndicator
+    putStr $ fromString "\n"
