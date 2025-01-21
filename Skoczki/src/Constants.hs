@@ -30,7 +30,7 @@ data Coords = Coords {
 
 defaultPieceType = Knight
 
-appHeader = "♘ ♘ ♘ SKOCZKI bajo jajo THE GAME ♞ ♞ ♞"
+appHeader = "♘ ♘ ♘ SKOCZKI THE GAME ♞ ♞ ♞"
 
 mainMenuHeader = "Welcome!"
 startGameOption = "1. Start"
@@ -41,7 +41,7 @@ whiteOption = "1. White"
 blackOption = "2. Black"
 
 playersColorIndicator = "You're playing as: "
-
+wrongMoveIndicator = "Illegal move, try again..."
 
 emptyBoard :: [Field]
 emptyBoard = [Field column row (Piece NoColor Blank) (setColor column row) 
@@ -54,14 +54,14 @@ startingBoardWhite = [Field column row (defaultPieceOrBlank row)  (setColor colu
 
 startingBoardBlack :: [Field]
 startingBoardBlack = [Field column row (defaultPieceOrBlank row)  (setColor column row) 
-                        | row <- allRows, column <- allColumns]
+                        | row <- allRows, column <- allColumnsReverse]
 
 
 
 defaultPieceOrBlank row
     | row == One || row == Two = (Piece WhiteColor defaultPieceType)
     | row == Seven || row == Eight = (Piece BlackColor defaultPieceType)
-    | otherwise = (Piece NoColor Blank)
+    | otherwise = (Piece NoColor Blank) -- getBlankPiece
 
 setColor xCoord yCoord
     | even diff = WhiteColor
@@ -99,6 +99,7 @@ getBlackPiece piece
     | piece == King = "♔ "
 
 allColumns = [A .. H]
+allColumnsReverse = [H, G .. A]
 allRows = [One .. Eight]
 allRowsReverse = [Eight, Seven .. One]
 

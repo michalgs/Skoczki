@@ -5,6 +5,7 @@ import System.Exit
 import ConsoleGraphics
 import Constants
 import MoveHandling
+import Utils
 
 launchMainMenu = do
     clearScreen
@@ -21,16 +22,17 @@ launchColorSelection = do
     handleColorSelection selection
 
 launchGameplay color = do
-    let board = selectStartingBoard color
-    runTheRound board color
+    clearScreen
+    runTheRound (selectStartingBoard color) color
 
 runTheRound board color = do
-    clearScreen
     printColorIndicator color
-    printGameState board
+    printGameState board color
     printInputIndicator
     moves <- getLine
-    let newBoard = handleMoveSelection moves board color
+    let legalMove = (moveIsLegal (getMovesList moves) board color color)
+    clearScreen
+    let newBoard = changeBoardOnCondition legalMove board (handleMoveSelection moves board color)
     runTheRound newBoard color
 
 selectStartingBoard color
@@ -63,3 +65,7 @@ handleColorSelection selection
 handleMoveSelection moves board color = 
     makeMove (head movesList) (last movesList) board color
     where movesList = getMovesList moves 
+
+changeBoardOnCondition condition oldBoard newBoard =
+    if condition then newBoard
+    else oldBoard

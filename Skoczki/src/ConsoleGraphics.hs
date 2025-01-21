@@ -26,8 +26,9 @@ printColorSelection = do
 
 -- Printing board
 
-printField field = do
-    if (column field == A) 
+printField playerColor field = do
+    if ((playerColor == WhiteColor && column field == A) ||
+        (playerColor == BlackColor && column field == H)) 
         then do 
             putStr $ fromString " "
             printRowName (row field)
@@ -38,30 +39,33 @@ printField field = do
              ]
     putStr $ fromString (getPieceCode (piece field))
     setSGR [Reset]
-    if (column field == H)
+    if ((playerColor == WhiteColor && column field == H) ||
+        (playerColor == BlackColor && column field == A))
         then do
             printRowName (row field)
             putStr $ fromString "\n"
     else putStr $ fromString ""
     where backgroundColor = color
 
-printGameState board = do
-    printColumnNames
-    printBoard board
-    printColumnNames
+printGameState board playerColor = do
+    printColumnNames playerColor
+    printBoard board playerColor
+    printColumnNames playerColor
 
-printBoard :: [Field] -> IO()
-printBoard board = mapM_ printField board
+printBoard :: [Field] -> Constants.Color -> IO()
+printBoard board playerColor = mapM_ (printField playerColor) board
 
 
-printColumnNames = do
+printColumnNames playerColor = do
     putStr $ fromString " "
     setSGR [ SetConsoleIntensity BoldIntensity
              , SetColor Foreground Vivid White
              , SetColor Background Dull Yellow
              ]
     putStr $ fromString "   "
-    mapM_ printSingleBorderCell allColumns
+    if (playerColor == WhiteColor) then
+        mapM_ printSingleBorderCell allColumns
+    else mapM_ printSingleBorderCell allColumnsReverse
     putStr $ fromString "   "
     setSGR [Reset]
     putStr $ fromString "\n"
@@ -105,3 +109,12 @@ printColorIndicator color = do
     setSGR [Reset]
     putStr $ fromString "\n"
     where colorValue = getColor color
+
+printWrongMoveIndicator = do
+    setSGR [ SetConsoleIntensity BoldIntensity
+             , SetColor Foreground Vivid Red
+             , SetColor Background Dull Black
+             ]
+    putStr $ fromString wrongMoveIndicator
+    setSGR [Reset]
+    putStr $ fromString "\n"
