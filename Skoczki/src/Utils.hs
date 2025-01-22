@@ -22,12 +22,20 @@ parseCharToColumn value =
 getIndexInAlphabet:: Char -> Int
 getIndexInAlphabet letter = fromEnum (toLower letter) - fromEnum 'a'
 
+getRowsBetweenStart startRow endRow
+      | startRow > endRow = getRowsBetween endRow startRow
+      | otherwise = getRowsBetween startRow endRow
+
 getRowsBetween startRow endRow
       | startRow == Eight = []
       | nextRow >= endRow = []
       | otherwise = nextRow : getRowsBetween nextRow endRow
       where nextRow = succ startRow 
     
+getColumnsBetweenStart startColumn endColumn
+      | startColumn > endColumn = getColumnsBetween endColumn startColumn
+      | otherwise = getColumnsBetween startColumn endColumn
+
 getColumnsBetween startColumn endColumn
       | startColumn == H = []
       | nextColumn >= endColumn = []

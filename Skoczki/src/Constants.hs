@@ -34,7 +34,7 @@ data Coords = Coords {
 
 defaultPieceType = Knight
 
-appHeader = "♘ ♘ ♘ SKOCZKI bajo jajo THE GAME ♞ ♞ ♞"
+appHeader = "♘ ♘ ♘ SKOCZKI THE GAME ♞ ♞ ♞"
 
 mainMenuHeader = "Welcome!"
 startGameOption = "1. Start"

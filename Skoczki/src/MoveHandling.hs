@@ -77,7 +77,7 @@ checkRowMove currentBoard currentColor startCoords finishCoords =
     finishPieceIsBlank (getFieldFromCoords currentBoard (x finishCoords) (y finishCoords) currentColor) 
         && checkBooleanList occupancyList
     where column = x startCoords
-          rows = getRowsBetween (y startCoords) (y finishCoords)
+          rows = getRowsBetweenStart (y startCoords) (y finishCoords)
           occupancyList = rowOccupancyList currentBoard column rows currentColor
 
 columnOccupancyList currentBoard row columns playerColor = 
@@ -87,7 +87,7 @@ checkColumnMove currentBoard currentColor startCoords finishCoords =
     finishPieceIsBlank (getFieldFromCoords currentBoard (x finishCoords) (y finishCoords) currentColor) 
         && checkBooleanList occupancyList
     where row = y startCoords
-          columns = getColumnsBetween (x startCoords) (x finishCoords)
+          columns = getColumnsBetweenStart (x startCoords) (x finishCoords)
           occupancyList = columnOccupancyList currentBoard row columns currentColor
 
 startPieceIsLegal field currentColor = (piece field) == (getDefaultPiece currentColor)
